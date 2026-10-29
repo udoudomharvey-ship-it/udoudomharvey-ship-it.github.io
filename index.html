@@ -1,0 +1,267 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Harvey Udoudom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Harvey Udoudom: computer engineer and founder of GreyMatter Inc., building Aura-M1, a privacy-first focus detector.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: instrument-panel editorial. Left-aligned, a live signal trace under the name,
+   one sticky label column per section, data set in mono. Boldness lives in the hero type and trace only. */
+:root{
+  --bg:#EDF0F3; --panel:#E2E7EC; --ink:#0F1823; --mute:#4E5C6B; --rule:#C3CCD5; --accent:#0A7C74; --accent-ink:#FFFFFF;
+  --display:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --ease:cubic-bezier(.23,1,.32,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1319;--panel:#131C25;--ink:#E7EDF2;--mute:#93A2B0;--rule:#27333E;--accent:#5CD6C6;--accent-ink:#06201D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1319;--panel:#131C25;--ink:#E7EDF2;--mute:#93A2B0;--rule:#27333E;--accent:#5CD6C6;--accent-ink:#06201D;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--display);font-size:17px;line-height:1.55;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto}
+a{color:inherit;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+
+/* top bar */
+.bar{display:flex;justify-content:space-between;gap:16px;padding-block:20px;align-items:baseline}
+.bar nav{display:flex;gap:22px;flex-wrap:wrap}
+.bar a{text-decoration:none}
+@media (hover:hover){.bar a:hover{color:var(--accent)}}
+
+/* hero */
+.hero{padding-top:clamp(28px,6vw,72px)}
+h1{font-weight:900;font-size:clamp(52px,12.5vw,168px);line-height:.86;letter-spacing:-.045em;margin:0;text-wrap:balance}
+h1 span{display:block}
+.hero .lede{max-width:34ch;font-size:clamp(20px,2.2vw,26px);line-height:1.3;margin:28px 0 0;font-weight:500}
+.hero .lede b{font-weight:700;color:var(--accent)}
+.trace{margin-top:clamp(28px,5vw,56px);border-block:1px solid var(--rule);position:relative;background:var(--panel)}
+.trace canvas{display:block;width:100%;height:132px}
+.trace .read{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 0}
+.trace .read output{color:var(--ink);font-variant-numeric:tabular-nums}
+.rise{animation:rise .6s var(--ease) both}
+.rise:nth-child(2){animation-delay:.05s}.rise:nth-child(3){animation-delay:.1s}
+@keyframes rise{from{transform:translateY(10px);opacity:.35}to{transform:none;opacity:1}}
+
+/* sections */
+section{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:24px 48px;padding-block:clamp(48px,8vw,96px);border-bottom:1px solid var(--rule)}
+section>.label{position:sticky;top:16px;align-self:start}
+@media (max-width:760px){section{grid-template-columns:1fr}section>.label{position:static}}
+h2{font-weight:900;font-size:clamp(34px,5vw,60px);line-height:.98;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance}
+p{margin:0 0 1em;max-width:62ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin:32px 0;border-top:1px solid var(--ink)}
+.facts div{padding:14px 16px 14px 0}
+.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);order:2}
+.facts dd{margin:0;font-weight:900;font-size:clamp(34px,4vw,48px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.facts div{display:flex;flex-direction:column;gap:8px}
+
+/* pipeline */
+.pipe{list-style:none;padding:0;margin:8px 0 28px;border-top:1px solid var(--rule)}
+.pipe li{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:8px 24px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.pipe li b{font-weight:700}
+.pipe li span{color:var(--mute)}
+@media (max-width:560px){.pipe li{grid-template-columns:1fr}}
+
+/* buttons / links */
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+  font:500 15px/1 var(--display);text-decoration:none;cursor:pointer;border-radius:2px;
+  transition:transform .16s var(--ease),background-color .16s var(--ease),color .16s var(--ease)}
+.btn.solid{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn:hover{background:var(--ink);color:var(--bg)}.btn.solid:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}}
+
+/* two column lists */
+.entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;padding:20px 0;border-top:1px solid var(--rule)}
+.entry:first-of-type{border-top:1px solid var(--ink)}
+.entry h3{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.entry p{grid-column:1/-1;margin:6px 0 0;color:var(--mute)}
+.entry .mono{align-self:center}
+
+/* credentials */
+.cred{width:100%;border-collapse:collapse;font-size:16px}
+.cred caption{text-align:left;padding-bottom:10px}
+.cred th,.cred td{text-align:left;padding:11px 12px 11px 0;border-top:1px solid var(--rule);vertical-align:top}
+.cred tr:first-child th,.cred tr:first-child td{border-top:1px solid var(--ink)}
+.cred td:last-child{font-family:var(--mono);font-size:13px;color:var(--mute);text-align:right;white-space:nowrap;padding-right:0}
+.cred-wrap{overflow-x:auto;margin-bottom:36px}
+.cred th{font-weight:500}
+
+footer{padding-block:48px 64px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.mail{font-weight:900;font-size:clamp(26px,5.4vw,64px);letter-spacing:-.035em;line-height:1;word-break:break-all;margin:0 0 20px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head><body><div class="wrap">
+  <header class="bar">
+    <span class="mono">Harvey Udoudom / Uyo, Nigeria</span>
+    <nav class="mono" aria-label="Sections">
+      <a href="#work">Work</a><a href="#also">Also</a><a href="#credentials">Credentials</a><a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1><span class="rise">Harvey</span><span class="rise">Udoudom</span></h1>
+      <p class="lede rise">Computer engineer. I build systems that read <b>body motion</b> and never need to know who you are.</p>
+
+      <div class="trace" aria-label="Live signal trace. Move your pointer to add noise; hold still and it settles.">
+        <canvas id="sig" height="132"></canvas>
+      </div>
+      <div class="read mono" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 0">
+        <span>Signal: your pointer, smoothed</span>
+        <span>Motion entropy <output id="h">0.00</output> bits &middot; <output id="state">settled</output></span>
+      </div>
+    </div>
+
+    <section id="work">
+      <div class="label mono">Work<br>2024 to present</div>
+      <div>
+        <h2>Aura-M1</h2>
+        <p>A privacy-first system that notices when a person's focus is declining, using only a webcam. It needs no special hardware. I designed and built the whole pipeline alone, under GreyMatter Inc., my company (registration in progress).</p>
+
+        <dl class="facts">
+          <div><dd>202</dd><dt>Automated tests</dt></div>
+          <div><dd>10</dd><dt>User interviews</dt></div>
+          <div><dd>5</dd><dt>Kinds of work covered</dt></div>
+          <div><dd>16 Dec</dd><dt>Demo Day, 2026</dt></div>
+        </dl>
+
+        <ol class="pipe" aria-label="Aura-M1 pipeline">
+          <li><b>Pose tracking</b><span>MediaPipe reads body landmarks from the webcam feed.</span></li>
+          <li><b>Entropy features</b><span>Movement is reduced to entropy measures, which describe how scattered motion is over time.</span></li>
+          <li><b>1-bit network</b><span>A binary neural network classifies the features and is small enough for modest hardware.</span></li>
+          <li><b>Threshold detector</b><span>Raises an alert only when the signal stays past the limit, so it does not react to one odd frame.</span></li>
+          <li><b>Recommender</b><span>Suggests a break, a timer or a change of task, by dashboard, voice or edge glow.</span></li>
+        </ol>
+
+        <p>Written in Python and Rust, with firmware for a small embedded board, a live dashboard, hands-free voice and an installable package for Linux and Windows. I interviewed ten people across five kinds of work and reshaped the plan around what they asked for. Selected for the iDICE Startup Bridge Founders Lab, Cohort 2.</p>
+
+        <div class="row">
+          <a class="btn solid" href="https://github.com/udoudomharvey-ship-it/aura-m1" target="_blank" rel="noopener">Source on GitHub</a>
+          <a class="btn" href="https://udoudomharvey-ship-it.github.io/aura-m1/" target="_blank" rel="noopener">Simulated demo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="also">
+      <div class="label mono">Also</div>
+      <div>
+        <h2>Teaching, security, and a metal workshop</h2>
+        <div>
+          <article class="entry">
+            <h3>Coding Instructor, Skillshare International School</h3><span class="mono">2025</span>
+            <p>Taught Python, JavaScript, and HTML and CSS through hands-on exercises and small projects. Wrote the lesson plans and gave each learner regular feedback.</p>
+          </article>
+          <article class="entry">
+            <h3>SIWES Trainee, University of Uyo</h3><span class="mono">2024</span>
+            <p>Cybersecurity tasks using network, system and web security knowledge, and hands-on metal workshop work under workshop safety procedures.</p>
+          </article>
+          <article class="entry">
+            <h3>B.Eng. Computer Engineering, University of Uyo</h3><span class="mono">Graduate</span>
+            <p>Python, Rust, computer vision, embedded firmware, Linux, Git and automated testing.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="credentials">
+      <div class="label mono">Credentials</div>
+      <div>
+        <h2>Certified and assessed</h2>
+        <div class="cred-wrap"><table class="cred">
+          <caption class="mono">IBM SkillsBuild</caption>
+          <tr><th>AI Fundamentals: Foundations for Understanding AI</th><td>Jul 2026</td></tr>
+          <tr><th>AI Literacy</th><td>Jul 2026</td></tr>
+          <tr><th>Data Fundamentals</th><td>Jul 2026</td></tr>
+          <tr><th>Cybersecurity Fundamentals</th><td>Jul 2026</td></tr>
+        </table></div>
+        <div class="cred-wrap"><table class="cred">
+          <caption class="mono">IBM Quantum</caption>
+          <tr><th>Basics of Quantum Information</th><td>Foundational</td></tr>
+          <tr><th>Fundamentals of Quantum Algorithms</th><td>Intermediate</td></tr>
+          <tr><th>Foundations of Quantum Error Correction</th><td>Advanced</td></tr>
+          <tr><th>General Formulation of Quantum Information</th><td>Advanced</td></tr>
+        </table></div>
+        <div class="cred-wrap"><table class="cred">
+          <caption class="mono">TestGorilla assessments</caption>
+          <tr><th>Cryptography</th><td>99th percentile</td></tr>
+          <tr><th>Cybersecurity</th><td>94th percentile</td></tr>
+          <tr><th>Computer Networking Fundamentals</th><td>92nd percentile</td></tr>
+        </table></div>
+        <div class="cred-wrap" style="margin-bottom:0"><table class="cred">
+          <caption class="mono">Programme</caption>
+          <tr><th>iDICE Startup Bridge Founders Lab, Modules 1 to 7</th><td>2026</td></tr>
+        </table></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div>
+      <p class="mono" style="margin-bottom:12px">Open to software, machine learning and data roles</p>
+      <p class="mail" id="addr">udoudomharvey@gmail.com</p>
+      <div class="row">
+        <button class="btn solid" id="copy" type="button">Copy email</button>
+        <a class="btn" href="https://github.com/udoudomharvey-ship-it" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <span class="mono">Harvey Frederick Udoudom</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var c=document.getElementById('sig'),x=c.getContext('2d');
+  var hOut=document.getElementById('h'),sOut=document.getElementById('state');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W=0,H=132,dpr=1,energy=0,lastX=null,lastY=null,t=0,visible=true;
+  function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+  function size(){dpr=Math.min(devicePixelRatio||1,2);W=c.clientWidth;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',size);
+  function bump(px,py){
+    if(lastX!==null){var d=Math.hypot(px-lastX,py-lastY);energy=Math.min(1,energy+d/900)}
+    lastX=px;lastY=py;
+  }
+  addEventListener('pointermove',function(e){bump(e.clientX,e.clientY)},{passive:true});
+  addEventListener('scroll',function(){bump(0,scrollY)},{passive:true});
+  if('IntersectionObserver' in window){new IntersectionObserver(function(e){visible=e[0].isIntersecting}).observe(c)}
+  function noise(i,tt){var s=Math.sin(i*12.9898+tt*78.233)*43758.5453;return s-Math.floor(s)-.5}
+  function draw(){
+    var mid=H/2;x.clearRect(0,0,W,H);
+    x.strokeStyle=css('--rule');x.lineWidth=1;x.beginPath();
+    for(var g=1;g<4;g++){x.moveTo(0,g*H/4);x.lineTo(W,g*H/4)}x.stroke();
+    x.strokeStyle=css('--accent');x.lineWidth=2;x.lineJoin='round';x.beginPath();
+    var step=3;
+    for(var px=0;px<=W;px+=step){
+      var u=px/W*Math.PI*6+t*1.2;
+      var calm=Math.sin(u)*14+Math.sin(u*.47+1)*6;
+      var rough=noise(px,Math.floor(t*30))*70*energy+Math.sin(u*5)*18*energy;
+      var y=mid+calm+rough;
+      px===0?x.moveTo(px,y):x.lineTo(px,y);
+    }
+    x.stroke();
+  }
+  function tick(){
+    t+=.016;energy*=.965;if(energy<.002)energy=0;
+    var bits=(energy*3.2).toFixed(2);hOut.textContent=bits;
+    sOut.textContent=energy>.55?'scattered':energy>.15?'restless':'settled';
+    if(visible)draw();
+    requestAnimationFrame(tick);
+  }
+  if(reduce){draw()}else{requestAnimationFrame(tick)}
+
+  var b=document.getElementById('copy'),a=document.getElementById('addr');
+  b.addEventListener('click',function(){
+    function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy email'},1600)}
+    function sel(){var r=document.createRange();r.selectNodeContents(a);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(a.textContent).then(done,sel)}else{sel()}
+  });
+})();
+</script>
+</body></html>
